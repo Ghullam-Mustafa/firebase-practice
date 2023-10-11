@@ -1,7 +1,8 @@
 "use client"
 import { useState } from 'react'
-import { createUserWithEmailAndPassword } from '@/config/firebase';
-// import { createUserWithEmailAndPassword } from "firebase/auth";
+// import { signInWithEmailAndPassword } from "firebase/auth";
+// import { createUserWithEmailAndPassword } from '@/config/firebase';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '@/config/firebase';
 const initialState = { email: "", password: "" }
 
@@ -22,11 +23,16 @@ export default function Register() {
       .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
+        console.log("User Registration successful");
+        console.log(userCredential)
+        console.log(user)
+        
         // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        console.log(error)
         // ..
       });
 
@@ -65,7 +71,7 @@ export default function Register() {
 
               className="w-full bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg hover:bg-blue-700"
             >
-              Log In
+              Register
             </button>
           </form>
         </div>
