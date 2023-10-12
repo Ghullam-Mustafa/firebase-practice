@@ -154,6 +154,11 @@ export default function Login() {
   const  handleLogout = ()=>{
     console.log("Logiut button clicked");
     signOut(auth)
+    .then(()=>{
+      console.log("User Logout ")
+    }).catch((error)=>{
+      console.log(error)
+    })
   }
 
   return (
