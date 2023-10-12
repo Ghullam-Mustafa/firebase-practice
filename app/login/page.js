@@ -109,7 +109,7 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { signInWithEmailAndPassword, onAuthStateChanged , signOut} from 'firebase/auth';
 import { auth } from '@/config/firebase';
 
 const initialState = { email: "", password: "" };
@@ -151,6 +151,11 @@ export default function Login() {
     console.log(state);
   };
 
+  const  handleLogout = ()=>{
+    console.log("Logiut button clicked");
+    signOut(auth)
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-500 to-blue-700">
       <div className="bg-white card p-8 rounded-lg shadow-md w-full max-w-md">
@@ -162,7 +167,7 @@ export default function Login() {
             </h2>
           </div>
           <div className="text-center">
-          <button className='bg-blue-600 py-3 px-5 text-white rounded-lg'>Logout</button>
+          <button className='bg-blue-600 py-3 px-5 text-white rounded-lg' onClick={handleLogout}>Logout</button>
           </div>
           </>
         ) : (
