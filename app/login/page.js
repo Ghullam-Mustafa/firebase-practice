@@ -152,10 +152,11 @@ export default function Login() {
   };
 
   const  handleLogout = ()=>{
-    console.log("Logiut button clicked");
+    // console.log("Logiut button clicked");/
     signOut(auth)
     .then(()=>{
-      console.log("User Logout ")
+      // console.log("User Logout ");
+      // setUser({})
     }).catch((error)=>{
       console.log(error)
     })
@@ -173,6 +174,8 @@ export default function Login() {
           </div>
           <div className="text-center">
           <button className='bg-blue-600 py-3 px-5 text-white rounded-lg' onClick={handleLogout}>Logout</button>
+          <button className='bg-blue-600 py-3 px-5 text-white rounded-lg' onClick={handleLogout}>Show Auth Current User</button>
+          <button className='bg-blue-600 py-3 px-5 text-white rounded-lg' onClick={handleLogout}>Update User Profile</button>
           </div>
           </>
         ) : (
