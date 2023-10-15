@@ -2,14 +2,14 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword, onAuthStateChanged , signOut,updateProfile} from 'firebase/auth';
+import { signInWithEmailAndPassword, onAuthStateChanged , signOut,updateProfile , sendEmailVerification } from 'firebase/auth';
 import { auth } from '@/config/firebase';
 
 const initialState = { email: "", password: "" };
 
 export default function Login() {
   const [state, setState] = useState(initialState);
-  const [user, setUser] = useState(null); // Initialize user as null.
+  const [user, setUser] = useState({}); // Initialize user as null.
 
   useEffect(() => {
     // Listen to changes in user authentication state.
@@ -49,7 +49,7 @@ export default function Login() {
     signOut(auth)
     .then(()=>{
       // console.log("User Logout ");
-      // setUser({})
+      setUser({})
     }).catch((error)=>{
       console.log(error)
     })
@@ -72,20 +72,29 @@ export default function Login() {
     });
     
   }
+
+  const sendEmail = () =>{
+    sendEmailVerification(auth.currentUser)
+    console.log("email send ")
+
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-500 to-blue-700">
       <div className="bg-white card p-8 rounded-lg shadow-md w-full max-w-md">
-        {user ? (
+        {user.email ? (
           <>
           <div>
             <h2 className="text-xl font-semibold text-center text-blue-600 mb-4">
               Welcome, {user.email}
             </h2>
           </div>
-          <div className="text-center flex justify-between ">
+          <div className="text-center flex  justify-evenly">
           <button className='bg-blue-600 py-3 m-1 px-5 text-white rounded-lg' onClick={handleLogout}>Logout</button>
           <button className='bg-blue-900 py-3 m-1 px-5 text-white rounded-lg' onClick={showAuthUser}>Show Auth Current User</button>
-          <button className='bg-blue-600 py-3 m-1 px-5 text-white rounded-lg' onClick={updateUserProfile}>Update User Profile</button>
+          </div>
+          <div className="text-center flex justify-evenly">
+          <button className='bg-red-600 py-3 m-3 px-5 text-white rounded-lg' onClick={updateUserProfile}>Update User Profile</button>
+          <button className='bg-orange-600 py-3 m-3 px-5 text-white rounded-lg' onClick={sendEmail}>Send Email</button>
           </div>
           </>
         ) : (
