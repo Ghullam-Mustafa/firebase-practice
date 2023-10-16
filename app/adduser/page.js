@@ -1,13 +1,15 @@
 
 "use client"
+import { collection, addDoc } from 'firebase/firestore/lite';
 
-import { useState, } from 'react';3
+import { useState, } from 'react'; 
+import { fireStore } from '@/config/firebase';
 
-const initialState = { fullname: "", age: "", country :"" };
+const initialState = { fullname: "", age: "", country: "" };
 
 export default function Login() {
   const [state, setState] = useState(initialState);
-//   const [user, setUser] = useState({}); // Initialize user as null.
+  //   const [user, setUser] = useState({}); // Initialize user as null.
 
   // useEffect(() => {
   //   // Listen to changes in user authentication state.
@@ -24,107 +26,105 @@ export default function Login() {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const {fullname, age, country} = state
+
+  const handleSubmit  = async (e) => {
     e.preventDefault();
 
-    const { email, password } = state;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("User Logged In successfully");
-        console.log(user);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
     console.log(state);
+
+
+    try {
+      const  docRef = await addDoc(collection(fireStore, "users"),{fullname, age, country});
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   };
 
-//   const  handleLogout = ()=>{
-//     // console.log("Logiut button clicked");/
-//     signOut(auth)
-//     .then(()=>{
-//       // console.log("User Logout ");
-//       setUser({})
-//     }).catch((error)=>{
-//       console.log(error)
-//     })
-//   }
+  //   const  handleLogout = ()=>{
+  //     // console.log("Logiut button clicked");/
+  //     signOut(auth)
+  //     .then(()=>{
+  //       // console.log("User Logout ");
+  //       setUser({})
+  //     }).catch((error)=>{
+  //       console.log(error)
+  //     })
+  //   }
 
-  const showAuthUser =()=>{
+  const showAuthUser = () => {
     console.log(auth.currentUser)
 
   }
 
-//   const updateUserProfile = () =>{
-//     updateProfile(auth.currentUser, {
-//       displayName: "Ghullam Mustafa",
-//     }).then(() => {
-//         console.log("profile updated ! ")
-//     }).catch((error) => {
-//       // An error occurred
-//       // ...
-//       console.error(error)
-//     });
-    
-//   }
+  //   const updateUserProfile = () =>{
+  //     updateProfile(auth.currentUser, {
+  //       displayName: "Ghullam Mustafa",
+  //     }).then(() => {
+  //         console.log("profile updated ! ")
+  //     }).catch((error) => {
+  //       // An error occurred
+  //       // ...
+  //       console.error(error)
+  //     });
 
-//   const sendEmail = () =>{
-//     sendEmailVerification(auth.currentUser)
-//     console.log("email send ")
+  //   }
 
-//   }
+  //   const sendEmail = () =>{
+  //     sendEmailVerification(auth.currentUser)
+  //     console.log("email send ")
+
+  //   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-500 to-blue-700">
       <div className="bg-white card p-8 rounded-lg shadow-md w-full max-w-md">
-         
-          <div>
-            <h2 className="text-3xl font-semibold text-center text-blue-600 mb-4">Add User Form</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-6">
-                <label htmlFor="email" className="block text-gray-600 text-lg font-semibold mb-2">Full Name</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-100"
-                  placeholder="Full Name"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="password" className="block text-gray-600 text-lg font-semibold mb-2">Age</label>
-                <input
-                  type="age"
-                  id="age"
-                  name="text"
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-100"
-                  placeholder="Your Age"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="password" className="block text-gray-600 text-lg font-semibold mb-2">Country</label>
-                <input
-                  type="country"
-                  id="country"
-                  name="country"
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-100"
-                  placeholder="Country"
-                  onChange={handleChange}
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg hover:bg-blue-700"
-              >
-                Login
-              </button>
-            </form>
-          </div>
-        
+
+        <div>
+          <h2 className="text-3xl font-semibold text-center text-blue-600 mb-4">Add User Form</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-6">
+              <label htmlFor="email" className="block text-gray-600 text-lg font-semibold mb-2">Full Name</label>
+              <input
+                type="text"
+                id="fullname"
+                name="fullname"
+                className="w-full px-4 py-2 border rounded-lg bg-gray-100"
+                placeholder="Full Name"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-gray-600 text-lg font-semibold mb-2">Age</label>
+              <input
+                type="number"
+                id="age"
+                // name="age"
+                className="w-full px-4 py-2 border rounded-lg bg-gray-100"
+                placeholder="Your Age"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-gray-600 text-lg font-semibold mb-2">Country</label>
+              <input
+                type="country"
+                id="country"
+                name="country"
+                className="w-full px-4 py-2 border rounded-lg bg-gray-100"
+                placeholder="Country"
+                onChange={handleChange}
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white text-lg font-semibold py-2 rounded-lg hover:bg-blue-700"
+            >
+              Add User
+            </button>
+          </form>
+        </div>
+
       </div>
     </div>
   );
