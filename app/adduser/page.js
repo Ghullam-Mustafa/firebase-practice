@@ -46,11 +46,16 @@ export default function Login() {
     e.preventDefault();
 
     console.log(state);
-
+    
+    let randomId = Math.random().toString(36).slice(2)
+    console.log(randomId)
+    
 
     try {
-      const docRef = await addDoc(collection(fireStore, "users"), { fullname, age, country });
-      console.log("Document written with ID: ", docRef.id);
+      await setDoc(doc(fireStore, "users", randomId), { fullname, age, country , id:randomId  });
+      // console.log("Document written with ID: ", docRef.id);
+      console.log("Document written with ID: ", randomId);
+
     } catch (e) {
       console.error("Error adding document: ", e);
     }
