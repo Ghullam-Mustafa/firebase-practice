@@ -1,8 +1,8 @@
 
 "use client"
-import { collection, addDoc } from 'firebase/firestore/lite';
+import { collection, addDoc , setDoc, doc } from 'firebase/firestore/lite';
 
-import { useState, } from 'react'; 
+import { useState, } from 'react';
 import { fireStore } from '@/config/firebase';
 
 const initialState = { fullname: "", age: "", country: "" };
@@ -26,56 +26,42 @@ export default function Login() {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const {fullname, age, country} = state
+  const { fullname, age, country } = state
 
-  const handleSubmit  = async (e) => {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   console.log(state);
+
+
+  //   try {
+  //     const docRef = await addDoc(collection(fireStore, "users"), { fullname, age, country });
+  //     console.log("Document written with ID: ", docRef.id);
+  //   } catch (e) {
+  //     console.error("Error adding document: ", e);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log(state);
 
 
     try {
-      const  docRef = await addDoc(collection(fireStore, "users"),{fullname, age, country});
+      const docRef = await addDoc(collection(fireStore, "users"), { fullname, age, country });
       console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
 
-  //   const  handleLogout = ()=>{
-  //     // console.log("Logiut button clicked");/
-  //     signOut(auth)
-  //     .then(()=>{
-  //       // console.log("User Logout ");
-  //       setUser({})
-  //     }).catch((error)=>{
-  //       console.log(error)
-  //     })
-  //   }
 
   const showAuthUser = () => {
     console.log(auth.currentUser)
 
   }
 
-  //   const updateUserProfile = () =>{
-  //     updateProfile(auth.currentUser, {
-  //       displayName: "Ghullam Mustafa",
-  //     }).then(() => {
-  //         console.log("profile updated ! ")
-  //     }).catch((error) => {
-  //       // An error occurred
-  //       // ...
-  //       console.error(error)
-  //     });
-
-  //   }
-
-  //   const sendEmail = () =>{
-  //     sendEmailVerification(auth.currentUser)
-  //     console.log("email send ")
-
-  //   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-500 to-blue-700">
       <div className="bg-white card p-8 rounded-lg shadow-md w-full max-w-md">
@@ -99,7 +85,7 @@ export default function Login() {
               <input
                 type="number"
                 id="age"
-                // name="age"
+                name="age"
                 className="w-full px-4 py-2 border rounded-lg bg-gray-100"
                 placeholder="Your Age"
                 onChange={handleChange}
