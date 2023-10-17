@@ -3,7 +3,8 @@ import { useState } from 'react'
 // import { signInWithEmailAndPassword } from "firebase/auth";
 // import { createUserWithEmailAndPassword } from '@/config/firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from '@/config/firebase';
+import { doc, setDoc } from 'firebase/firestore/lite';
+import { auth, fireStore } from '@/config/firebase';
 const initialState = { email: "", password: "" }
 
 export default function Register() {
@@ -17,16 +18,24 @@ export default function Register() {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const {email, password} = state
+    const { email, password } = state
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed up 
         const user = userCredential.user;
         console.log("User Registration successful");
         console.log(userCredential)
         console.log(user)
-        
+
+        let ramdomId =  Math.random().toString(36).slice(2)
+
+        try {
+          await setDoc(doc(fireStore, "users",user.uid),{fullName: "" , uid : user.uid})
+        } catch (error) {
+          console.error(error)
+        }
+
         // ...
       })
       .catch((error) => {
